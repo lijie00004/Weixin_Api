@@ -1,0 +1,44 @@
+{
+  //页面路径设置
+  "pages":[
+    "pages/index/index",
+    "pages/logs/logs"
+  ],
+  //默认页面的窗口设置
+  "window":{
+    "navigationBarBackgroundColor": "#fff",//导航栏背景颜色，#fff（十六进制颜色值），默认值：#000000
+    "navigationBarTitleText": "WeChat",//导航栏标题文字
+    "navigationBarTextStyle":"black",//导航栏标题颜色，仅支持black/white，默认white
+    "backgroundTextStyle":"light",//下拉时，背景字体、Loading图的样式，仅支持dark/light
+    "backgroundColor":"#ff83fa",//下拉时出现的窗口背景色，默认值#ffffff
+    "enablePullDownRefresh":true//开启下拉刷新，当用户下拉时会触发onPullDownRefresh事件，默认false,
+  },
+  "tabBar": {
+    "color": "#bfbfbf",//tab上的文字默认颜色
+    "selectedColor": "#1AAD19",//选中状态的颜色
+    "backgroundColor": "#1AAD19",//tab的背景色
+    "borderStyle": "black",//默认值black,仅支持black/white，tabbar上边框颜色
+    "list": [//2~5个tab,
+      {
+        "pagePath": "page/API/index",//页面路径，需先在Pages中定义
+        "text": "首页",//tab上按钮的文字
+        "iconPath": "image/index.png",//tab上icon图片路径，icon最大40kb
+        "selectedIconPath": "image/index.png",//选中时图片
+        "position":"top"//在顶部或底部显示（bottom/top），默认值bottom
+      },
+      {
+        "pagePath": "page/API/pages/Interface/tabBar/index",
+        "text": "tabBar页面",
+        "iconPath": "image/tabbar.png",
+        "selectedIconPath": "image/tabbar.png"
+      }
+    ]
+  },
+  "networkTimeout": {
+    "request": 10000,//设置wx.request的超时事件，单位毫秒
+    "connectSocket": 10000,//设置wx.connectSocket的超时时间
+    "uploadFile": 10000,//设置wx.uploadFile的超时时间
+    "downloadFile": 10000//设置wx.downloadFile的超时时间
+  },
+  "debug": false//默认false，开启后，在控制面板，调试信息以info形式输出
+}

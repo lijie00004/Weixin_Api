@@ -1,0 +1,29 @@
+weixin style sheets
+(1).单位尺寸
+开启上传代码时样式文件自动补全，这样小程序会自动补全其余一些样式的兼容性写法，在不同终端达到统一视觉效果
+两种尺寸单位：	rpx：屏幕宽度750rpx,iphone6是375px,即750rpx = 375px，1rpx = 0.5px
+				rem：屏幕宽度20rem, iphton6是375px,即20rem = 375px， 1rem = 18.75px
+
+(2).选择器
+选择器 { 样式1; 样式2; }
+/* 选择所有class="myClass"的组件， 并 设置 边框 */
+.myClass { border : solid 1px #000; }
+/* 选择所有view组件且class含有myClass的组件， 并设置边框 */
+view.myClass { border : solid 1px #000; }
+/* 选择所有view组件中子节点class含有myClass的组件， 并设置边框 */
+view .myClass { border : solid 1px #000; }
+/* 选 所有 class 含有 myContent 组件 中 所有 checkbox 组件 和 radiobox 组件， 并 设置 它们 的 边框 */
+.myContent checkbox, .myContent radiobox { boder : solid 1px #000; }
+/* 选择 所有 view 组件 且 class 含有 myClass 的 组件， 在其后面插入新内容， 内容为new content*/
+view.myClass:: after { content : 'new content' }
+
+(3).内联样式（静态样式写到class中，动态样式用style）
+<!--通过style动态设置样式-->
+<view style="border: solid 1px #000; background-color:{{color}}"></view>
+<!--通过class选择器设置样式 -->
+<view class="myClassName1 myClassName"></view>
+(4).样式导入（重复利用）
+.common-view { border : solid 1px #000; }
+
+@import "common.wxss";
+.page-container { padding : 10px; }

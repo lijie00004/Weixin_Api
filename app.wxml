@@ -1,0 +1,145 @@
+<!--checked = "false"系统会认为是字符串，为true，用：checked = "{{false}}"-->
+<!--...将对象展开，把key-value值拷贝进来-->
+(1).数据绑定
+<view>{{content}} </view><!--作为内容-->
+<view id="item-{{id}}" style="border:{{border}}">作为属性渲染</view><!--作为组件属性-->
+<view wx:if="{{showContent}}">作为属性渲染</view><!--作为控制属性-->
+<view>{{2}} </view><!--关键字-->
+(2).运算
+<view>{{showContent ? '显示文本' : '不显示文本'}} </view><!--不显示文本-->
+<view>{{ num1 + num2 }} + 1 + {{ num3 }} = ? </view><!--3 + 1 + 3 = ?-->
+<view>{{ "name : " + name }} </view><!--name : weixin-->
+<view>{{ num3 > 0 }} </view><!--true-->
+(3).组合
+<view>{{ [myValue, 2, 3, 'stringtype'] }} </view>
+<template is="testTemp" data="{{ name : myvalue1, age : myvalue2 }}"></template><!--myvalue1 myvalue2是变量-->
+<template is="testTemp" data="{{ ... myobj1, key5 : 5, ... yobj2, key6 : 6 }}"></template><!--myobj1 yobj2是数组-->
+
+(4)wx:if<!--控制属性-->
+wx:if="{{条件}}"
+<view wx:if="{{ false}}">1</view>
+<view wx:elif="{{ false}}">2</view>
+<view wx:else>3</view>
+
+(5)block wx:if<!--控制控件-->
+<block wx:if="{{true}}">
+  <view>view组件</view>
+  <image/>
+</block>
+
+(5)wx:for
+<view wx:for="{{myArray}}"><!--myArray是数组-->
+  {{index}}:{{item}}<!--遍历中，当前项下标默认为index，当前项变量名默认为item-->
+</view>
+
+<view wx:for="{{ myArray}}"wx:for-index="myIndex" wx:for-item="myItem"><!--重新定义下标和项-->
+  {{myIndex}}:{{myItem.name}}
+</view>
+Page( {
+  data : {
+    myArray : [
+      { name : 'value1' },<!--数组里的对象，[ [1,2,3], [4,5,6] ]这是数据里的数组-->
+      { name : 'value2' }
+    ]
+  }
+} );
+
+<view wx:for="{{ myArray}}" wx:for-index="myIndex" wx:for-item="myItem">
+  <block wx:for="{{myItem}}" wx:for-index="subIndex" wx:for-item="subItem"><!--block渲染一个包含多个节点的结构块-->
+    {{subItem}}
+  </block>
+</view>
+
+(6)模板<!--is属性指向使用的模板，data属性，传入变量值-->
+<template name="myTemplate">
+  <view>内容</view>
+  <view>{{content}}</view>
+  <view>{{name}}</view>
+  <view>{{myObj.key1}}</view>
+  <view>{{key2}}</view>
+</template>
+<template is="myTemplate" data="{{ content : '内容', name, myObj, ...myObj2}}"/><!--is可以绑定变量，is="{{templateName}}},myobj对象有key1,myobj2对象有key2-->
+
+(7).事件
+bind(catch)+事件名，bind不会阻止冒泡事件，catch会阻止冒泡事件
+touchstart:触摸开始
+touchmove:触摸后移动
+touchcancel:触摸被打断,如来电提醒，弹窗
+touchend:触摸结束
+tap:触摸后马上离开
+longtap:触摸后，过350ms再离开
+<view bindtap="tap1">
+	view1
+	<view catchtap="tap2">
+		view2
+		<view bindtap="tap3">
+			view3
+		</view> 
+	</view>
+</view>
+
+
+<view bindtap="myevent">
+	view
+</view>
+Page( {
+	myevent : function( e ) {<!--会收到一个事件对象e-->
+		console. log( e );
+	}
+} );
+输出如下
+{
+	"type":"tap",<!--事件类型-->
+	"timeStamp": 6571,<!--事件生产时的时间戳，即页面打开到触发的毫秒数-->
+	"target":{<!--触发事件源组件，即冒泡开始的组件-->
+		"id":"",<!--事件源组件的id-->
+		"offsetLeft": 0,
+		"offsetTop": 0,
+		"dataset":{
+		}
+	}
+	"currentTarget":{<!--当前组件的属性-->
+		"id":"",
+		"offsetLeft": 0,
+		"offsetTop": 0,
+		"dataset":{
+
+		}
+	},
+	"detail":{
+	"x": 15,
+	"y": 11
+	},
+	"touches":[
+		{"identifier": 0,<!--触摸点的标识符-->
+		"pageX": 15,<!--离左上角距离-->
+		"pageY": 11,
+		"clientX": 15,<!--去掉导航条，离左上角距离-->
+		"clientY": 11
+		}
+	],
+	"changedTouches":[
+		{ 
+			"identifier": 0,
+			"pageX": 15,
+			"pageY": 11, 
+			clientX": 15,
+			"clientY": 11
+		}
+	]
+}
+
+<!--dataset是组件的自定义数据，以data-开头，大写要在前加“-”-->
+<view bindtap="myevent" data-my-name="weixin" data-myAge="12">
+	dataset 示例
+</view>
+Page( {
+	myevent : function( e ) {
+		console.log( e.currentTarget.dataset);
+	}
+} );
+
+(8).引用
+import引入模板，有作用域，即不能间接引用
+include引入组件
+<import src="b.wxml"/>

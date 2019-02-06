@@ -44,3 +44,22 @@ Page({
     var pages = getCurrentPages()//获取当前页面栈的实例，数组形式，第一个元素是首页，最后一个元素是当前页面
 });
 
+模块使用
+function run( who ) {
+  console.log( who + ' run' );
+}
+function walk( who ) {
+  console.log( who + ' walk' );
+}
+module.exports = {
+  run : run,
+  walk : walk
+};
+var otherMod = require( 'mod.js' );
+Page( { 
+  onShow : function() {
+    otherMod.run( 'somebody' );
+    otherMod.walk( 'somebody' );
+  }
+} );
+

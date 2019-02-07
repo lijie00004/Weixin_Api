@@ -1,0 +1,36 @@
+组件共有属性
+id        ：组件的唯一表示
+class     ：组件里的样式类，在对应的wxss中定义的样式类
+style     ：组件的内联样式
+hidden    ：组件是否隐藏
+data-     ：自定义属性，组件触发事件时，会发送给事件处理函数
+bind/catch：组件事件
+
+view组件（块级容器组件）
+hover:是否开启点击态，默认false
+hover-class:按下去的样式，默认“none”，没有点击态效果
+hover-start-time:按住后多久出现点击态，默认50毫秒
+hover-stay-time:手指松开后点击态保留时间，默认400毫秒
+<view style="display:flex;">
+	<view style="background-color:red; flex-grow: 1; height:80rpx;"></view>
+	<view style="background-color:blue; flex-grow: 1; height:80rpx;"></view>
+	<view style="background-color:green; flex-grow: 1; height:80rpx;"></view>
+</view>
+
+<view style="display:flex; height:400rpx;">
+	<view style="background-color:red; width:250rpx; color:#fff;">1</view>
+	<view style="flex-grow:1; display:flex; flex-direction:column;">
+		<view style="flex-grow:1; background-color:blue; color:#fff;">2</view>
+		<view style="flex-grow:1; background-color:green; color:#fff;">3</view>
+	</view>
+</view>
+
+<view style="display:flex; flex-direction:column; height:400rpx;">
+	<view style="background-color:red; height:150rpx; color:#fff;">1</view>
+	<view style="flex-grow:1; display:flex;">
+		<view style="flex-grow:1; background-color: blue; color:#fff;">2</view>
+		<view style="flex-grow:1; background-color: green; color:#fff;">3</view>
+	</view>
+</view>
+
+

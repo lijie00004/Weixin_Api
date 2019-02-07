@@ -27,3 +27,112 @@ view.myClass:: after { content : 'new content' }
 
 @import "common.wxss";
 .page-container { padding : 10px; }
+
+按显示方式元素分为块级元素和行内元素
+元素的显示方式由display属性控制
+margin: 20px;（上、下、左、右各20px。）
+margin: 20px 40px;（上、下20px；左、右40px。）
+margin: 20px 40px 60px;（上20px；左、右40px；下60px。）
+margin: 20px 40px 60px 80px;（上20px；右40px；下60px；左80px。）
+
+块级元素（display: block;）：
+	总在新行上开始，
+	宽度默认：width+marginLeft+marginRight+paddingLeft+paddingRight
+	等于父级元素内容区宽度
+	高度由内容决定，可以容纳行内元素和块级元素（view组件默认是块级元素）
+<view style="border:solid 10px; margin:10px; margin-top:10px; padding:10px; width:200px; height:100px;">块级元素</view>
+
+行内元素（display: inline;）:
+	和其他非块级元素在一行上
+	只能设置左右margin和左右padding
+	宽度是文字或图片的宽度，不可改变
+	行内元素宽度、高度不能直接设置
+	只能容纳文本或行内元素
+前面的文字<view style="border:solid 1px; margin:10px; padding : 0 10px; display: inline;">我是行内元素</view>后面的文字
+
+行内块元素（display: inline-block)
+	可以设置宽、高、内边距和外边距（如果content宽度不是100%，后面文字不换行）
+前面的文字<view style="border:solid 1px; margin:10px; padding:10px; display:inline-block;">content</view>后面的文字
+
+
+浮动（float:left)
+	可以向左或向右移动，直到碰到其它边框
+<view>（浮动框位于左边，其它文字会绕过浮动框）
+    文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 文本
+    <view style="display: block; float: left; border: solid 1px; margin : 20px;">浮动框</view>
+    文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 文本 文本
+ </view>
+
+ <view style="border:solid 1px;">（父框不会包括浮动框，尽管是子组件）
+ 	<view>其他元素</view>
+ 	<view style="float:left;">浮动框</view>
+ </view>
+
+<view style="border: solid 1px;">
+	<view>其他元素</view>
+	<view style="float: left;"> 浮动 框</view>
+	<view style="clear: both; height: 0;"></view>（通过clear清除浮动框）
+</view>
+
+<view style="border:solid 1px; margin-top: 10px;" class="clearfix">
+	<view>其他元素</view>
+	<view style="float:left;">浮动框</view>
+</view>
+.clearfix:after { display:block; height:0; clear:both; content:'' }一定要设置content，否则元素不会显示,after表示在组件后面插入
+
+
+定位(position:relative)
+static：默认值
+relative：相对之前位置移动，原先位置不会被占
+absolute：相对包含块，包含块是离当前元素最近的position为absolu或relative的父元素，如果没有根元素就是包含块，
+		原先位置会被占，定位后生产一个块级框，忽略原先框
+fixed：和absolute类似，其包含块是视窗本身
+
+<view style="border:solid 1px;">文案文案
+	< text style="position:relative; top:10px; left:10px;">relative</text>
+	文案文案文案文案文案文案文案
+</view>
+<view style="border: solid 1px; position: relative; height : 80px;"> 文 案 文 案
+	<text style=" position: absolute; left : 10px; bottom : 10px;">absolute</text>
+	文 案 文 案 文 案 文 案 文 案 文 案 文 案
+</view>
+
+Flex布局：主要由容器和项目构成（display:flex或inline-flex)
+Flex容器：采用Flex布局的元素，它的所有直接子元素自动成为容器成员
+Flex项目：Flex容器的所有直接子元素自动成为容器成员，子元素的float、clear和vertical-align会失效，默认沿x轴从左到右
+x轴：main axis
+y轴：cross axis
+左中：main start
+右中：main end
+上中：cross start
+下中：cross end
+项目宽度：main size
+项目高度：cross size
+.mybox{ display: flex | inline-flex;}inline-flex：具有行内元素特性
+.mybox{ flex-direction : row | row-reverse | colum | colum-reverse; }起点依次：左中、右中、上中、下中
+.mybox{ flex-wrap : nowrap | wrap | wrap-reverse; }如果一条轴线排不下使用，依次：不换行，默认值、换行，第一行在上方、换行，第一行在下方
+													当设置换行时，还要设置alignitem属性，其值不能为“stretch"
+.mybox{ flex-flow : row-reverse wrap; }子元素排列方式，默认row nowrap
+.mybox{ justify-content : flex-start | flex-end | center | space-between | space-around; }项目沿x轴或y轴的对齐方式
+依次：左对齐、右对齐、居中、 两端各一个，项目之间间距相等、 项目间距相等，但比项目与边框间距大一倍
+.mybox{ align-items : flex-start | flex-end | center | baseline | stretch; }项目沿x与y轴的对齐方式
+依次：上对齐、下对齐、居中、项目第一行文字对齐、如果项目未设置高度或设置为auto，项目将在交叉轴方向拉伸填充整个容器
+.mybox{ align-content : flex-start | flex-end | center | space-between | space-around | stretch; }多行时有效
+所有项目已排好，控制所有项目，依次：靠上、 靠下、 垂直中间、 上下两端各一行，其余均匀排列、 项目行均匀排列，项目行距比项目行到边框大一倍、 垂直拉伸，铺满框
+
+项目属性
+.myitem{ order : <integer>; }integer越小越靠前排放
+.myitem{ flex-grow : <number>; }number默认是0，放大项目。按flex-grow比例填充剩余空间，如果值都为1，将均匀分剩余空间
+.myitem{ flex-shrink : <number>; }缩放项目，默认1
+.myitem{ flex-basis : < length> | auto; }flex-basis属性用来定义伸缩项目的基准值，默认值为auto，即项目的本来大小，
+
+.myitem{ flex: 1 1 auto }flex是上面三个集合
+.myitem{ flex : auto; } /* 同 上句 */
+.myitem{ flex: 0 0 auto }
+.myitem{ flex : none; } /* 同 上句 */
+
+.myitem{ align-self : auto | flex- start | flex- end | center | baseline | stretch; }控制本项目对齐方式，和align-items一样
+
+
+
+

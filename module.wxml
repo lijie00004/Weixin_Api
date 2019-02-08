@@ -34,3 +34,124 @@ hover-stay-time:手指松开后点击态保留时间，默认400毫秒
 </view>
 
 
+scroll-view组件
+scroll-x:false横向滚动，默认值false
+scroll-y:false纵向滚动，默认值false
+upper-threshold="0"距顶部/左边多远时，触发scrolltoupper事件,默认值50px
+lower-threshold="100"距底部/右边多远时，触发scrolltolower事件，默认值50px
+scroll-top设置竖向滚动条位置
+scroll-left设置横向滚动条位置
+scroll-into-view值是某子元素id，滚动到该元素时，元素顶部对齐滚动区域顶部
+bindscroll滚动时触发
+
+<scroll-view class="scroll-container" upper-threshold="0" lower-threshold="100" scroll-into-view="{{toView}}" bindscroll="scroll" bindscrolltolower="scrollToLower" bindscrolltoupper="scrollToUpper" scroll-y=" true" scroll-top="{{scrollTop}}">
+	<view id="item-1" class="scroll-item bg-red">1</view>
+	<view id="item-2" class="scroll-item bg-blue">2</view>
+	<view id="item-3" class="scroll-item bg-red">3</view>
+	<view id="item-4" class="scroll-item bg-blue">4</view>
+	<view id="item-5" class="scroll-item bg-red">5</view>
+	<view id="item-6" class="scroll-item bg-blue">6</view>
+</scroll-view>
+<view class="act">
+	<button bindtap="scrollToTop">点击滚动到顶部</button>
+</view>
+/*给予固定高度*/
+.scroll-container{ border:solid 1px; height:800rpx;}//需要先设置一个固定高度
+.scroll-container .scroll-item { height:300rpx; width:120%; }
+.bg-blue { background-color: #87CEFA; }
+.bg-red { background-color: #FF6347; }
+.act { padding : 10px; }
+Page( {
+	data : {
+		toView : 'item-3'// 第一次 渲染 时，< scroll_view> 默认滚动到id值为"item-3"区域
+	},
+	scrollToUpper:function(){ console.log( '触发到滚动顶部事件');},
+	scrollToLower:function(){ console.log( '触发滚动到底部事件');},//点击按钮时，滚动到顶部
+	scroll:function(){ console.log( '触发了滚动事件');},
+	scrollToTop:function(){ this.setData({scrollTop:'0'}); }
+} );
+
+滑块视图组件（轮播图、滑动页面、图片预览等效果）
+swiper放置一个或多个swiper-item，swiper-item可以放置任何组件，默认宽高自动设置为100%
+indicator-dots是否显示面板提示点，默认false
+autoplay是否自动切换，默认false
+current当前所在页面的index，默认值0
+interval自动切换时间间隔，默认值5000
+duration滑动动画时长，默认值1000
+circular是否采用衔接滑动，默认值false
+bindchange：current改变时会触发change事件，event.detail={current:current}
+
+<swiper class="banner" indicator-dots="true" autoplay="{{autoplay}}" current="0" interval="2000" duration="300" bindchange="change">
+	<block wx:for="{{sliderList}}">
+		<swiper-item class="{{item.className}}">{{item.name}}</swiper-item>
+	</block>
+</swiper>
+<view>
+	<button bindtap="play"> 暂停|播放</button>
+</view>
+
+.banner{ height : 400px; background-color: #ddd; }
+.bg-blue { background-color: #87CEFA; }
+.bg-red { background-color: #FF6347; }
+.bg-green { background-color: #43CD80; }
+
+Page( {
+	data : {
+		autoplay : true,
+		sliderList : [
+			{ className : 'bg-red', name : 'slider1' },
+			{ className : 'bg-blue', name : 'slider2' },
+			{ className : 'bg-green', name : 'slider3' }
+		] 
+	},
+	play : function() {
+		this. setData( {
+			autoplay : !this.data.autoplay
+		} );
+	},
+	change : function() { console. log( '执行了滚动' ); }
+} );
+
+
+<view class="customSwiper">
+	<swiper class="banner" autoplay="true" interval="2000" duration="300" bindchange="switchTab">
+		<block wx:for="{{sliderList}}">
+			<swiper-item>
+				<image style="width: 100%; height: 100%;" src="{{ item.imageSource}}"/>
+			</swiper-item>
+		</block>
+	</swiper>
+	<view class="tab">
+		<block wx:for="{{sliderList}}">
+			<view wx:if="{{item.selected}}" class="tab-item selected">
+				{{index+ 1}}
+			</view>
+			<view wx:else class="tab-item">{{index+ 1}}</view>
+		</block>
+	</view>
+</view>
+.customSwiper { height : 379.5rpx; position:relative; }
+.customSwiper swiper{ height : 100%; }
+.tab { height : 70rpx; position: absolute; bottom : 0; display: flex; width : 100%; text-align: center; justify-content : center; align-items: center; }
+.tab .tab-item{ background- color: #ccc; height : 50rpx; width : 50rpx; line-height: 50rpx; font-size : 12rpx; color : #fff;
+border-radius: 4px; margin-right : 10px; }
+.tab .tab-item.selected { background- color: red; }
+Page( { 
+	data : {
+		sliderList : [ 
+			{ selected : true, imageSource : './image/banner1.jpg' },
+			{ selected : false, imageSource : './image/banner2.jpg' },
+			{ selected : false, imageSource : './image/banner3.jpg' }
+		]
+	},
+	switchTab : function( e ) { 
+		var sliederList = this.data.sliderList, i, l; 
+		//修改 指示 点 选中 态 
+		for ( i = 0; item = sliederList[i]; ++i ){
+			item.selected = e.detail.current == i;
+		}
+		this.setData( {
+			sliderList : sliederList
+		} );
+	}
+} );

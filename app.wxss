@@ -7,7 +7,13 @@ weixin style sheets
 (2).选择器
 选择器 { 样式1; 样式2; }
 /* 选择所有class="myClass"的组件， 并 设置 边框 */
-.myClass { border : solid 1px #000; }
+.myClass { 
+	border : solid 1px #000;
+	background-color: #FF6347;
+	height:300rpx;
+	width:120%;
+	padding : 10px;
+}
 /* 选择所有view组件且class含有myClass的组件， 并设置边框 */
 view.myClass { border : solid 1px #000; }
 /* 选择所有view组件中子节点class含有myClass的组件， 并设置边框 */
@@ -17,11 +23,6 @@ view .myClass { border : solid 1px #000; }
 /* 选择 所有 view 组件 且 class 含有 myClass 的 组件， 在其后面插入新内容， 内容为new content*/
 view.myClass:: after { content : 'new content' }
 
-(3).内联样式（静态样式写到class中，动态样式用style）
-<!--通过style动态设置样式-->
-<view style="border: solid 1px #000; background-color:{{color}}"></view>
-<!--通过class选择器设置样式 -->
-<view class="myClassName1 myClassName"></view>
 (4).样式导入（重复利用）
 .common-view { border : solid 1px #000; }
 
@@ -109,7 +110,7 @@ y轴：cross axis
 项目宽度：main size
 项目高度：cross size
 .mybox{ display: flex | inline-flex;}inline-flex：具有行内元素特性
-.mybox{ flex-direction : row | row-reverse | colum | colum-reverse; }起点依次：左中、右中、上中、下中
+.mybox{ flex-direction : row | row-reverse | colum | colum-reverse; }--行排、相反顺序行排、纵排、相反顺序纵排
 .mybox{ flex-wrap : nowrap | wrap | wrap-reverse; }如果一条轴线排不下使用，依次：不换行，默认值、换行，第一行在上方、换行，第一行在下方
 													当设置换行时，还要设置alignitem属性，其值不能为“stretch"
 .mybox{ flex-flow : row-reverse wrap; }子元素排列方式，默认row nowrap

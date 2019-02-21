@@ -17,8 +17,8 @@
 
 (4)wx:if<!--控制属性-->
 wx:if="{{条件}}"
-<view wx:if="{{ false}}">1</view>
-<view wx:elif="{{ false}}">2</view>
+<view wx:if="{{ false }}">1</view>
+<view wx:elif="{{ false }}">2</view>
 <view wx:else>3</view>
 
 (5)block wx:if<!--控制控件-->
@@ -62,6 +62,7 @@ Page( {
 
 (7).事件
 bind(catch)+事件名，bind不会阻止冒泡事件，catch会阻止冒泡事件
+
 touchstart:触摸开始
 touchmove:触摸后移动
 touchcancel:触摸被打断,如来电提醒，弹窗

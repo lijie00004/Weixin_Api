@@ -1,4 +1,5 @@
 
+
 //获取app实例
 var app = getApp();
 //小程序初始化，默认页面入栈，依次触发onLoad onShow onReady

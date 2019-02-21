@@ -6,11 +6,28 @@ hidden    ：组件是否隐藏
 data-     ：自定义属性，组件触发事件时，会发送给事件处理函数
 bind/catch：组件事件
 
-view组件（块级容器组件）
-hover:是否开启点击态，默认false
-hover-class:按下去的样式，默认“none”，没有点击态效果
-hover-start-time:按住后多久出现点击态，默认50毫秒
-hover-stay-time:手指松开后点击态保留时间，默认400毫秒
+view组件（块级容器组件,静态样式写到class中，动态样式用style(内联样式)）
+<view style="
+	border: solid 1px #000; 
+	background-color:{{color}};
+	height:400rpx;
+	color:#fff;--文本色值
+
+	display:flex;
+	flex-direction:column;
+	flex-grow:1;--allocate surplus space
+"	
+	class="scroll-container"
+	hover	是否开启点击态，默认false
+	hover-class:String 按下去的样式，默认“none”，没有点击态效果
+	hover-stop-propagation:Boolean 指定是否阻止本节点的祖先节点出现点击态
+	hover-start-time:Number	按住后多久出现点击态，单位毫秒
+	hover-stay-time	手指松开后点击态保留时间，单位毫秒
+></view>
+
+<!--通过class选择器设置样式 -->
+<view class="myClassName1 myClassName"></view>
+
 <view style="display:flex;">
 	<view style="background-color:red; flex-grow: 1; height:80rpx;"></view>
 	<view style="background-color:blue; flex-grow: 1; height:80rpx;"></view>
@@ -35,14 +52,20 @@ hover-stay-time:手指松开后点击态保留时间，默认400毫秒
 
 
 scroll-view组件
-scroll-x:false横向滚动，默认值false
-scroll-y:false纵向滚动，默认值false
-upper-threshold="0"距顶部/左边多远时，触发scrolltoupper事件,默认值50px
-lower-threshold="100"距底部/右边多远时，触发scrolltolower事件，默认值50px
-scroll-top设置竖向滚动条位置
-scroll-left设置横向滚动条位置
-scroll-into-view值是某子元素id，滚动到该元素时，元素顶部对齐滚动区域顶部
-bindscroll滚动时触发
+<scroll-view
+	class="scroll-container"
+	scroll-x 			= Boolean 		默认值"false"	横向滚动	可以直接scroll-x，不用赋值"true"
+	scroll-y 			= Boolean 		默认值"false"	纵向滚动	可以直接scroll-y，不用赋值"true"
+	upper-threshold 	= Number/String	默认值"50" 距顶部/左边多远时（单位px，2.4.0起支持rpx）	触发 scrolltoupper 事件
+	lower-threshold 	= Number/String	默认值"50" 距顶部/左边多远时（单位px，2.4.0起支持rpx）	触发 scrolltolower 事件
+	scroll-top 			= Number/String	设置竖向滚动条位置（单位px，2.4.0起支持rpx）如"300" or "{{variate}}"
+	scroll-left 		= Number/String	设置横向滚动条位置（单位px，2.4.0起支持rpx）
+	scroll-into-view	= String		值应为某子元素id（id不能以数字开头，如id = "red"）。设置哪个方向可滚动，则在哪个方向滚动到该元素
+	enable-back-to-top	= Boolean		默认值"false"	iOS点击顶部状态栏、安卓双击标题栏时，滚动条返回顶部，只支持竖向
+	bindscrolltoupper 	= EventHandle	滚动到顶部/左边，会触发 scrolltoupper 事件，如bindscrolltoupper="upper",upper是函数
+	bindscrolltolower 	= EventHandle	滚动到底部/右边，会触发 scrolltolower 事件
+	bindscroll 			= EventHandle	滚动时触发，event.detail = {scrollLeft, scrollTop, scrollHeight, scrollWidth, deltaX, deltaY}
+>
 
 <scroll-view class="scroll-container" upper-threshold="0" lower-threshold="100" scroll-into-view="{{toView}}" bindscroll="scroll" bindscrolltolower="scrollToLower" bindscrolltoupper="scrollToUpper" scroll-y=" true" scroll-top="{{scrollTop}}">
 	<view id="item-1" class="scroll-item bg-red">1</view>
@@ -55,15 +78,12 @@ bindscroll滚动时触发
 <view class="act">
 	<button bindtap="scrollToTop">点击滚动到顶部</button>
 </view>
+
 /*给予固定高度*/
 .scroll-container{ border:solid 1px; height:800rpx;}//需要先设置一个固定高度
-.scroll-container .scroll-item { height:300rpx; width:120%; }
-.bg-blue { background-color: #87CEFA; }
-.bg-red { background-color: #FF6347; }
-.act { padding : 10px; }
 Page( {
 	data : {
-		toView : 'item-3'// 第一次 渲染 时，< scroll_view> 默认滚动到id值为"item-3"区域
+		toView : 'item-3'// 第一次渲染时，< scroll_view> 默认滚动到id值为"item-3"区域
 	},
 	scrollToUpper:function(){ console.log( '触发到滚动顶部事件');},
 	scrollToLower:function(){ console.log( '触发滚动到底部事件');},//点击按钮时，滚动到顶部
@@ -71,15 +91,27 @@ Page( {
 	scrollToTop:function(){ this.setData({scrollTop:'0'}); }
 } );
 
+
 滑块视图组件（轮播图、滑动页面、图片预览等效果）
-swiper放置一个或多个swiper-item，swiper-item可以放置任何组件，默认宽高自动设置为100%
-indicator-dots是否显示面板提示点，默认false
-autoplay是否自动切换，默认false
-current当前所在页面的index，默认值0
-interval自动切换时间间隔，默认值5000
-duration滑动动画时长，默认值1000
-circular是否采用衔接滑动，默认值false
-bindchange：current改变时会触发change事件，event.detail={current:current}
+<swiper
+  indicator-dots			= Boolean	默认值"false" 是否显示面板指示点
+  indicator-color			= Color		默认值rgba(0, 0, 0, .3)	指示点颜色
+  indicator-active-color	= Color		默认值#000000	当前选中的指示点颜色
+  autoplay					= Boolean	默认值"false"	是否自动切换
+  current					= Number	默认值"0"	当前所在滑块的 index
+  current-item-id			= String	当前所在滑块的 item-id ，不能与 current 被同时指定
+  interval					= Number	默认值"5000"	自动切换时间间隔
+  duration					= Number	默认值"500"	sliding animation duration
+  circular					= Boolean	default"false"	Whether to use cohesion sliding
+  vertical					= Boolean	default"false"	Whether the sliding direction is vertical
+  previous-margin			= String	default"0px"	expose previous margin
+  next-margin				= String	default"0px"	expose next margin
+  display-multiple-items	= Number	default"1"	many of the sliders to display at the same time
+  skip-hidden-item-layout	= Boolean	default"false"	Whether to skip hidden item layout
+  bindchange 				= EventHandle	change handle	event.detail = {current: current, source: source}
+  bindtransition			= EventHandle	swiper-item position change		event.detail = {dx: dx, dy: dy}
+  bindanimationfinish		= EventHandle	At the end of the animation, handle		event.detail = {dx: dx, dy: dy}
+>
 
 <swiper class="banner" indicator-dots="true" autoplay="{{autoplay}}" current="0" interval="2000" duration="300" bindchange="change">
 	<block wx:for="{{sliderList}}">
